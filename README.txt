@@ -3,6 +3,8 @@ Spreadsheet merging script for Evolution of the Vertebrate Visual System working
 The scripts here are "as is", mostly for preservation purposes. 
 In this state, they are not intended as a product for use by others.    
 
+See README_USERS.txt for the explanation of the app from the users point of view. 
+
 
 Config
 -----
@@ -17,7 +19,8 @@ Since settings.py contains passwords, it is under .gitignore
 
 DB_CONN_STRING is assumed to point to a PostgreSQL database.  
 Database YOURDB should exist, but can be empty (it will be wiped out anyway).  
-WORK_DIR contains source data and will accept the results. 
+WORK_DIR contains source data and will accept the results; 
+see README_USERS.txt for details on the structure of the dir.  
 
 
 Dev setup
