@@ -1,0 +1,73 @@
+Taxonomy resolution for Visual WG
+---------------------------------
+
+A submission spreadsheet is required to contain pub-genus, pub-species, with non-empty values for each row. 
+It can also contain optional columns pub-class, pub-order, pub-family, as well as pub-subspecies, 
+which may have empty values in rows. 
+
+Peter's taxonomy resolution table contains
+auth-synonym, auth-class, auth-order, auth-family, auth-genus, auth-species, auth-sourceid
+
+In a summary: 
+In order to determine the authoritative Class, Order, Family, Genus, and Species 
+to be used as keys in data merging,  
+we concatenate (with spaces in between) pub-genus and pub-species (and, when available, pub-subspecies)
+and look for a matching auth-synonym.  
+This can return zero, one, or multiple matches from the taxonomy resolution table.  
+In the latter case, we try to resolve the ambiguity using pub-family, if supplied.
+
+If after this, we determine exactly one matching row from the resolution table, 
+the row from the spreadsheet is accepted for merge, but under the taxon name 
+that may differ from the submitted one, in part of in full. 
+
+The row from the spreadsheet is ignored in merge if its taxa matches were 
+not found or remained ambiguous.  
+
+
+For details, here is the table summarizing tests and actions constituting the 
+matching of (pub-genus + pub-species + pub-subbspecies) against auth-synonym: 
+(These also are the status columns showing up in the resolution reports.)
+
+
+binom_match	fam_match	pub_auth_agreement	 	taxon_action    data_action 
+---------   ---------	--------------  	 	------------	-----------
+notfound	n/a			n/a					 	notfound		ignore
+exact		n/a			nopub				 	writein			accept 
+exact		n/a			agree			 		ok				accept
+exact		n/a			disagree				override		accept        
+
+ambig		nopub		n/a						foundmany		ignore
+
+ambig		notfound	n/a						foundmany		ignore
+ambig		exact		nopub					writein			accept
+ambig		exact		agree					ok				accept
+ambig		exact		disagree				override		accept
+ambig		ambig		n/a						foundmany		ignore
+
+Legend: 
+
+binom_match - the outcome of matching (pub-genus + pub-species + pub-subbspecies) against auth-synonym.
+
+fam_match - the outcome of matching pub-family against auth-family, for the results of an ambiguous binom_match
+
+pub_auth_agreement - the status of agreement/disagreement between the submitted publication name 
+                     and the found authoritaitve name 
+
+
+notfound:  no match of (pub-genus + ' ' + pub-species) against auth-synonym, 
+           or no match of subm-family against auth-family, as appropriate
+           
+exact: exactly one matching authority entry was found
+
+ambig: 2 or more matching authority entries 
+
+nopub: no value was provided for subm-family or for (subm-class, subm-order, subm-family), as appropriate. 
+agree:  subm-xxx was provided and agrees with auth-xxx
+disagree: the opposite
+
+ok:        subm-xxx will be accepted as is, since they matched the ones from auth-xxx
+override:  subm-xxx will be replaced with those from auth-xxx
+wtritein:  auth-xxx will be used, since subm-xxx were not provided
+
+accept:  the data row will be placed in the merged spreadsheet
+ignore:  the data row will be excluded from the merge

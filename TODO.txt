@@ -1,0 +1,41 @@
+
+Code improvements
+------------------
+
+* Config file
+** Text file - use ConfigParser [Beasley, p332; consider optparse for command-line overrides - Beasley p374]
+** Located outside the source tree 
+
+* Around the columns.csv file 
+** Create a class that parses columns.csv and offers a lookup API
+  - Consider tabular for the implementation http://pypi.python.org/pypi/tabular/
+  - or python-tablefu  http://pypi.python.org/pypi/python-tablefu/0.3.0
+** Another class with spreadsheet manipulation functions driven by info from columns.csv
+** Split Type column into Type and Constraints
+** Eliminate hardwired column names in favor of categories designated in columns.csv that drive execution logic
+** Syntax check for data points, at pre-load time
+
+* Library + Tool split 
+** Command-line tool supporting multiple commands for moving data between file system and an Postgres.
+   [possibly-relevant modules in standard lib?: !cmd! curses?  readline?  rlcompleter?] cmd looks good! 
+** The tool uses a library API that should be good enough to be used by a web front end as well.
+** May need to return error reports as data objects (so that can render them either as files or as web pages)  
+
+* Modularize taxonomy resolution out of the main workflow
+** (This part is most in flux and is the most domain-specific)
+
+* Misc 
+** Rename issues.log to issues.txt (better double-click opening, at least on a Mac)
+
+
+* Unit testing 
+
+
+Future *functionality*
+----------------------
+
+* Detection of outlier datapoints 
+* Dense data subsets 
+* Pairwise trait availability report (as in email from Sonke Johnsen of 2011-07-01)
+* Work with Excel files directly - consider http://pypi.python.org/pypi/xlrd/0.7.1
+

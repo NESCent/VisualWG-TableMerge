@@ -1,0 +1,16 @@
+* [done 2011-04-14] Put config values into settings.py
+* [done June 2011] Use new Peter's resolution table 
+* [done June 2011] In submission loading, drop rows with no trait data (so that unused rows from Karen's template do not make it to master)
+* [done June 2011] Start ignoring the Summary column (with an error message)
+* [done June 2011] Save summarized spreadheets in 'results' rather than 'subm-reports'
+* [done? expired?] After these, send new taxa_resolution report to Olaf
+
+[2011-07 either partly done, or not as pressing]
+* Nail down the spec for taxonomy resolution, with Karen and Peter
+** Should we have, for each contributing authority, that any resolved Genus+species shows up as synonym (of that authority?)?
+** If two authorities resolve a synonym exactly the same, is this success?  Which authority should be "credited"? 
+** Protocol for handling taxa that we cannot resolve. 
+** Any arrangements for maintaining resolution tables collected by Peter, as a resource? (internal or public)
+*** Should this attempt resolution w.r.t. references as well? 
+** Stability of headers in the files I receive from Peter
+** See Ch on taxonomic names in "Scientific Style and Format" in NESCent library

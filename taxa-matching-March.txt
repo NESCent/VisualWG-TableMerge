@@ -1,0 +1,63 @@
+[These are old rules, used in March 2011, for the Meeting 3 merge. 
+At that time, submissions contained published genus+species, as well as optional "resolved" full taxonomy. 
+For June, WG decided to provide full "published" taxonomy -- see the current taxa-matching.txt]
+
+Taxonomy resolution for Visual WG
+---------------------------------
+
+We assume that a submission row always has a (pub-genus, pub-species) specified. 
+(If they were not provided, but (subm-genus, subm-species) were, we copied the latter to the former.)
+
+Some submissions may also contain resolved taxonomy.  
+Denote those as subm-class, subm-order, subm-family, subm-genus, subm-species, subm-subspecies. 
+(They are Class, ..., Species in the submission data - i.e., capitalized.)
+
+Peter's taxonomy resolution table contains
+auth-synonym, auth-class, auth-order, auth-family, auth-genus, auth-species, auth-sourceid
+(They are class, ...., species in spreadsheets - i.e., lower case.)
+
+In summary: 
+We match the concatenation  (pub-genus + ' ' + pub-species) against auth-synonym in order to determine 
+the authoritative (auth-class, auth-order, auth-family, auth-genus, auth-species). 
+In cases of ambiguity, we try to resolve it using subm-family, if available.
+
+
+For details, here is the table summarizing tests and actions constituting the 
+matching of (pub-genus + ' ' + pub-species) against auth-synonym: 
+(These also are the status columns showing up in the resolution reports.)
+
+
+pub_match	fam_match	curr_agreement		taxon_action    data_action 
+---------   ---------	--------------  	------------	-----------
+notfound	n/a			n/a					notfound		ignore
+exact		n/a			nocurr				writein			accept 
+exact		n/a			agree				ok				accept
+exact		n/a			disagree			override		accept        
+
+ambig		nocurr		n/a					foundmany		ignore
+
+ambig		notfound	n/a					foundmany		ignore
+ambig		exact		nocurr				writein			accept
+ambig		exact		agree				ok				accept
+ambig		exact		disagree			override		accept
+ambig		ambig		n/a					foundmany		ignore
+
+Legend: 
+
+notfound:  no match of (pub-genus + ' ' + pub-species) against auth-synonym, 
+           or no match of subm-family against auth-family, as appropriate
+           
+exact: exactly one matching authority entry was found
+
+ambig: 2 or more matching authority entries 
+
+nocurr: no value was provided for subm-family or for (subm-class, subm-order, subm-family), as appropriate. 
+agree:  subm-xxx was provided and agrees with auth-xxx
+disagree: the opposite
+
+ok:        subm-xxx will be accepted as is, since they matched the ones from auth-xxx
+override:  subm-xxx will be replaced with those from auth-xxx
+wtritein:  auth-xxx will be used, since subm-xxx were not provided
+
+accept:  the data row will be placed in the merged spreadsheet
+ignore:  the data row will be excluded from the merge
